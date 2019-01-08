@@ -2,7 +2,6 @@ package com.peng.zhu.service.impl;
 
 import com.peng.zhu.common.Const;
 import com.peng.zhu.common.ServerResponse;
-import com.peng.zhu.common.TokenCache;
 import com.peng.zhu.dao.UserMapper;
 import com.peng.zhu.pojo.User;
 import com.peng.zhu.service.IUserService;
@@ -103,7 +102,7 @@ public class UserServiceImpl  implements IUserService {
         if(validResponse.isSuccess()){
             return ServerResponse.createByErrorMessage("用户不存在!");
         }
-        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
+        String token = RedisPoolUtil.get(Const.TOKEN_PREFIX+username);
         if(StringUtils.isBlank(token)){
             return ServerResponse.createByErrorMessage("token过期无效");
         }
