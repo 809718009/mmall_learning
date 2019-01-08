@@ -7,6 +7,7 @@ import com.peng.zhu.dao.UserMapper;
 import com.peng.zhu.pojo.User;
 import com.peng.zhu.service.IUserService;
 import com.peng.zhu.util.MD5Util;
+import com.peng.zhu.util.RedisPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,7 +87,8 @@ public class UserServiceImpl  implements IUserService {
         int resultCount = userMapper.checkAnswer(username,question,answer);
         if(resultCount>0){
             String forgetToken = UUID.randomUUID().toString();
-            TokenCache.setKey(TokenCache.TOKEN_PREFIX+username,forgetToken);
+            //TokenCache.setKey(TokenCache.TOKEN_PREFIX+username,forgetToken);
+            RedisPoolUtil.setEx(Const.TOKEN_PREFIX+username,forgetToken,60*60*12);
             return ServerResponse.createBySuccessMessage(forgetToken);
         }
         return ServerResponse.createByErrorMessage("问题答案错误!");
