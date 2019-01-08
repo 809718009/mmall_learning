@@ -6,13 +6,18 @@ import com.peng.zhu.common.ServerResponse;
 import com.peng.zhu.pojo.User;
 import com.peng.zhu.service.IOrderService;
 import com.peng.zhu.service.IUserService;
+import com.peng.zhu.util.CookieUtil;
+import com.peng.zhu.util.JsonUtil;
+import com.peng.zhu.util.RedisPoolUtil;
 import com.peng.zhu.vo.OrderVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -29,8 +34,13 @@ public class OrderManageController {
 
     @RequestMapping("list.do")
     @ResponseBody
-    public ServerResponse<PageInfo> list(HttpSession session, @RequestParam(value = "pagNum", defaultValue = "1") Integer pagNum, @RequestParam(value = "pagSize", defaultValue = "10") Integer pagSize) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<PageInfo> list(HttpServletRequest request, @RequestParam(value = "pagNum", defaultValue = "1") Integer pagNum, @RequestParam(value = "pagSize", defaultValue = "10") Integer pagSize) {
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -44,8 +54,13 @@ public class OrderManageController {
 
     @RequestMapping("detail.do")
     @ResponseBody
-    public ServerResponse<OrderVo> detail(HttpSession session, Long orderNo) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<OrderVo> detail(HttpServletRequest request, Long orderNo) {
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -59,8 +74,13 @@ public class OrderManageController {
 
     @RequestMapping("search.do")
     @ResponseBody
-    public ServerResponse<PageInfo> search(HttpSession session, Long orderNo,@RequestParam(value = "pagNum", defaultValue = "1") Integer pagNum, @RequestParam(value = "pagSize", defaultValue = "10") Integer pagSize) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<PageInfo> search(HttpServletRequest request, Long orderNo,@RequestParam(value = "pagNum", defaultValue = "1") Integer pagNum, @RequestParam(value = "pagSize", defaultValue = "10") Integer pagSize) {
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -74,8 +94,13 @@ public class OrderManageController {
 
     @RequestMapping("send_goods.do")
     @ResponseBody
-    public ServerResponse<String> sendGoods(HttpSession session, Long orderNo) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> sendGoods(HttpServletRequest request, Long orderNo) {
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录!");
         }

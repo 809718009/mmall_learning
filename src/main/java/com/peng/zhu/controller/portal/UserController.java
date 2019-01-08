@@ -60,7 +60,6 @@ public class UserController {
     @RequestMapping(value="get_user_info.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> getUserInfo(HttpSession session,HttpServletRequest request){
-        //User user = (User)session.getAttribute(Const.CURRENT_USER);
         String token = CookieUtil.readLoginToken(request);
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
@@ -86,8 +85,13 @@ public class UserController {
     }
     @RequestMapping(value="reset_password.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<String> restPassword(HttpSession session,String newPassword,String oldPassword){
-         User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> restPassword(HttpServletRequest request,String newPassword,String oldPassword){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
          if(user==null){
              return ServerResponse.createByErrorMessage("用户未登录!");
          }
@@ -95,8 +99,13 @@ public class UserController {
     }
     @RequestMapping(value="update_information.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> updateInformation(HttpSession session,User user){
-        User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<User> updateInformation(HttpServletRequest request,User user){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User currentUser = JsonUtil.str2Object(userString,User.class);
         if(currentUser==null){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -106,11 +115,16 @@ public class UserController {
     }
     @RequestMapping(value="get_information.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> getInformation(HttpSession session){
-        User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
-        if(currentUser==null){
+    public ServerResponse<User> getInformation(HttpServletRequest request){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        return iUserService.getInformation(currentUser.getId());
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
+        if(user==null){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        return iUserService.getInformation(user.getId());
     }
 }

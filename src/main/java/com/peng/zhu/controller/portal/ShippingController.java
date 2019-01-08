@@ -7,12 +7,17 @@ import com.peng.zhu.common.ServerResponse;
 import com.peng.zhu.pojo.Shipping;
 import com.peng.zhu.pojo.User;
 import com.peng.zhu.service.IShippingService;
+import com.peng.zhu.util.CookieUtil;
+import com.peng.zhu.util.JsonUtil;
+import com.peng.zhu.util.RedisPoolUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -26,8 +31,14 @@ public class ShippingController {
 
     @RequestMapping("add.do")
     @ResponseBody
-    public ServerResponse<Map<String,Integer>> add(HttpSession session, Shipping shipping){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Map<String,Integer>> add(HttpServletRequest request, Shipping shipping){
+
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -35,8 +46,13 @@ public class ShippingController {
     }
     @RequestMapping("delete.do")
     @ResponseBody
-    public ServerResponse<String> delete(HttpSession session, Integer shippingId){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> delete(HttpServletRequest request, Integer shippingId){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -45,8 +61,13 @@ public class ShippingController {
 
     @RequestMapping("edit.do")
     @ResponseBody
-    public ServerResponse<String> edit(HttpSession session, Shipping shipping){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> edit(HttpServletRequest request, Shipping shipping){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -55,8 +76,13 @@ public class ShippingController {
 
     @RequestMapping("get.do")
     @ResponseBody
-    public ServerResponse<Shipping> get(HttpSession session, Integer shippingId){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Shipping> get(HttpServletRequest request, Integer shippingId){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -65,9 +91,14 @@ public class ShippingController {
 
     @RequestMapping("get_list.do")
     @ResponseBody
-    public ServerResponse<PageInfo> getList(HttpSession session, @RequestParam(value = "pagNum",defaultValue = "1") Integer pagNum,
+    public ServerResponse<PageInfo> getList(HttpServletRequest request, @RequestParam(value = "pagNum",defaultValue = "1") Integer pagNum,
                                             @RequestParam(value = "pagSize",defaultValue = "10")Integer pagSize){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }

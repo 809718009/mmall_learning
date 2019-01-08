@@ -10,7 +10,11 @@ import com.peng.zhu.common.ResponseCode;
 import com.peng.zhu.common.ServerResponse;
 import com.peng.zhu.pojo.User;
 import com.peng.zhu.service.IOrderService;
+import com.peng.zhu.util.CookieUtil;
+import com.peng.zhu.util.JsonUtil;
+import com.peng.zhu.util.RedisPoolUtil;
 import com.peng.zhu.vo.OrderVo;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +40,13 @@ public class OrderController {
 
     @RequestMapping("create.do")
     @ResponseBody
-    public ServerResponse<Object> createOrder(HttpSession session,Integer shippingId){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Object> createOrder(HttpServletRequest request,Integer shippingId){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user==null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -46,8 +55,13 @@ public class OrderController {
 
     @RequestMapping("cancle.do")
     @ResponseBody
-    public ServerResponse<Object> cancleOrder(HttpSession session,Long orderNo){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Object> cancleOrder(HttpServletRequest request,Long orderNo){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user==null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -56,8 +70,13 @@ public class OrderController {
 
     @RequestMapping("get_order_cart_product.do")
     @ResponseBody
-    public ServerResponse getOrderCartProduct(HttpSession session){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse getOrderCartProduct(HttpServletRequest request){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user==null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -66,8 +85,13 @@ public class OrderController {
 
     @RequestMapping("detail.do")
     @ResponseBody
-    public ServerResponse orderDetail(HttpSession session,Long orderNo){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse orderDetail(HttpServletRequest request,Long orderNo){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user==null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -76,8 +100,13 @@ public class OrderController {
 
     @RequestMapping("list.do")
     @ResponseBody
-    public ServerResponse<PageInfo> orderList(HttpSession session,@RequestParam(value="pagNum",defaultValue = "1") Integer pagNum, @RequestParam(value="pagSize",defaultValue = "10")Integer pagSize){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<PageInfo> orderList(HttpServletRequest request,@RequestParam(value="pagNum",defaultValue = "1") Integer pagNum, @RequestParam(value="pagSize",defaultValue = "10")Integer pagSize){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user==null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -96,8 +125,13 @@ public class OrderController {
 
     @RequestMapping("pay.do")
     @ResponseBody
-    public ServerResponse<Object> pay(HttpSession session, Long orderNo,HttpServletRequest request){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Object> pay(Long orderNo,HttpServletRequest request){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }

@@ -6,12 +6,17 @@ import com.peng.zhu.pojo.Category;
 import com.peng.zhu.pojo.User;
 import com.peng.zhu.service.ICategoryService;
 import com.peng.zhu.service.IUserService;
+import com.peng.zhu.util.CookieUtil;
+import com.peng.zhu.util.JsonUtil;
+import com.peng.zhu.util.RedisPoolUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -26,8 +31,13 @@ public class CategroyManageController {
 
     @RequestMapping("add_category.do")
     @ResponseBody
-    public ServerResponse<String> addCategroy(HttpSession session,String categroyName, @RequestParam(value="parentId",defaultValue ="0") int parentId){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> addCategroy(HttpServletRequest request, String categroyName, @RequestParam(value="parentId",defaultValue ="0") int parentId){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -39,8 +49,13 @@ public class CategroyManageController {
     }
     @RequestMapping("set_category_name.do")
     @ResponseBody
-    public ServerResponse<String> setCategoryName(HttpSession session,String categroyName,int categroyId){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> setCategoryName(HttpServletRequest request,String categroyName,int categroyId){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -51,8 +66,13 @@ public class CategroyManageController {
     }
     @RequestMapping("get_category.do")
     @ResponseBody
-    public ServerResponse getChildrenParallelCategroy(HttpSession session,@RequestParam(value = "categoryId" ,defaultValue = "0") Integer categoryId){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse getChildrenParallelCategroy(HttpServletRequest request,@RequestParam(value = "categoryId" ,defaultValue = "0") Integer categoryId){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -63,8 +83,13 @@ public class CategroyManageController {
     }
     @RequestMapping("get_deep_gategory.do")
     @ResponseBody
-    public ServerResponse getCategoryAndDeepChildrenGategory(HttpSession session,@RequestParam(value="categoryId",defaultValue = "0") Integer categoryId){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse getCategoryAndDeepChildrenGategory(HttpServletRequest request,@RequestParam(value="categoryId",defaultValue = "0") Integer categoryId){
+        String token = CookieUtil.readLoginToken(request);
+        if(StringUtils.isEmpty(token)){
+            return ServerResponse.createByErrorMessage("用户未登录!");
+        }
+        String userString = RedisPoolUtil.get(token);
+        User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorMessage("用户未登录!");
         }
