@@ -1,14 +1,13 @@
 package com.peng.zhu.controller.backend;
 
 import com.github.pagehelper.PageInfo;
-import com.peng.zhu.common.Const;
 import com.peng.zhu.common.ServerResponse;
 import com.peng.zhu.pojo.User;
 import com.peng.zhu.service.IOrderService;
 import com.peng.zhu.service.IUserService;
 import com.peng.zhu.util.CookieUtil;
 import com.peng.zhu.util.JsonUtil;
-import com.peng.zhu.util.RedisPoolUtil;
+import com.peng.zhu.util.RedisSharedPoolUtil;
 import com.peng.zhu.vo.OrderVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/manage/order/")
@@ -39,7 +37,7 @@ public class OrderManageController {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录!");
@@ -59,7 +57,7 @@ public class OrderManageController {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录!");
@@ -79,7 +77,7 @@ public class OrderManageController {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录!");
@@ -99,7 +97,7 @@ public class OrderManageController {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录!");

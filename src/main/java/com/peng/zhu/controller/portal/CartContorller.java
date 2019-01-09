@@ -7,7 +7,7 @@ import com.peng.zhu.pojo.User;
 import com.peng.zhu.service.ICartService;
 import com.peng.zhu.util.CookieUtil;
 import com.peng.zhu.util.JsonUtil;
-import com.peng.zhu.util.RedisPoolUtil;
+import com.peng.zhu.util.RedisSharedPoolUtil;
 import com.peng.zhu.vo.CartVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/cart/")
@@ -32,7 +31,7 @@ public class CartContorller {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
@@ -46,7 +45,7 @@ public class CartContorller {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
@@ -60,7 +59,7 @@ public class CartContorller {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
@@ -74,7 +73,7 @@ public class CartContorller {
         if(StringUtils.isEmpty(deelteToken)){
             return ServerResponse.createByErrorMessage("用户未登录!,请登录。");
         }
-        String userString = RedisPoolUtil.get(deelteToken);
+        String userString = RedisSharedPoolUtil.get(deelteToken);
         User currentUser = JsonUtil.str2Object(userString,User.class);
         if(currentUser == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
@@ -88,7 +87,7 @@ public class CartContorller {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
@@ -102,7 +101,7 @@ public class CartContorller {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
@@ -116,7 +115,7 @@ public class CartContorller {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
@@ -130,7 +129,7 @@ public class CartContorller {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
@@ -144,7 +143,7 @@ public class CartContorller {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createBySuccess(0);

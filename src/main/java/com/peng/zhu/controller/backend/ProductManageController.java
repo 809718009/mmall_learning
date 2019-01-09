@@ -2,7 +2,6 @@ package com.peng.zhu.controller.backend;
 
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
-import com.peng.zhu.common.Const;
 import com.peng.zhu.common.ServerResponse;
 import com.peng.zhu.pojo.Product;
 import com.peng.zhu.pojo.User;
@@ -12,7 +11,7 @@ import com.peng.zhu.service.IUserService;
 import com.peng.zhu.util.CookieUtil;
 import com.peng.zhu.util.JsonUtil;
 import com.peng.zhu.util.PropertiesUtil;
-import com.peng.zhu.util.RedisPoolUtil;
+import com.peng.zhu.util.RedisSharedPoolUtil;
 import com.peng.zhu.vo.ProductDetailVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -46,7 +43,7 @@ public class ProductManageController {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorMessage("用户未登录!");
@@ -64,7 +61,7 @@ public class ProductManageController {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorMessage("用户未登录!");
@@ -82,7 +79,7 @@ public class ProductManageController {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorMessage("用户未登录!");
@@ -100,7 +97,7 @@ public class ProductManageController {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorMessage("用户未登录!");
@@ -118,7 +115,7 @@ public class ProductManageController {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorMessage("用户未登录!");
@@ -136,7 +133,7 @@ public class ProductManageController {
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             return  ServerResponse.createByErrorMessage("用户未登录!");
@@ -164,7 +161,7 @@ public class ProductManageController {
             ServerResponse serverResponse = ServerResponse.createByErrorMessage("用户未登录!");
             resultMap.put("msg",serverResponse);
         }
-        String userString = RedisPoolUtil.get(token);
+        String userString = RedisSharedPoolUtil.get(token);
         User user = JsonUtil.str2Object(userString,User.class);
         if(user == null){
             resultMap.put("success",false);

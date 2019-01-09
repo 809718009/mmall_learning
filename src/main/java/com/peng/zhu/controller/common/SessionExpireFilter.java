@@ -4,11 +4,10 @@ import com.peng.zhu.common.Const;
 import com.peng.zhu.pojo.User;
 import com.peng.zhu.util.CookieUtil;
 import com.peng.zhu.util.JsonUtil;
-import com.peng.zhu.util.RedisPoolUtil;
+import com.peng.zhu.util.RedisSharedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -23,10 +22,10 @@ public class SessionExpireFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest)servletRequest;
         String token = CookieUtil.readLoginToken(request);
         if(StringUtils.isNotEmpty(token)){
-            String userJsonStr = RedisPoolUtil.get(token);
+            String userJsonStr = RedisSharedPoolUtil.get(token);
             User user = JsonUtil.str2Object(userJsonStr,User.class);
             if(user!=null){
-                RedisPoolUtil.expire(token, Const.RedisCacheExtime.Redis_Session_Extime);
+                RedisSharedPoolUtil.expire(token, Const.RedisCacheExtime.Redis_Session_Extime);
             }
         }
         filterChain.doFilter(servletRequest,servletResponse);
