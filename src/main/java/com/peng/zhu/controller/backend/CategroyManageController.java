@@ -28,7 +28,7 @@ public class CategroyManageController {
     @RequestMapping("add_category.do")
     @ResponseBody
     public ServerResponse<String> addCategroy(HttpServletRequest request, String categroyName, @RequestParam(value="parentId",defaultValue ="0") int parentId){
-        String token = CookieUtil.readLoginToken(request);
+       /* String token = CookieUtil.readLoginToken(request);
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -41,12 +41,14 @@ public class CategroyManageController {
         if(iUserService.checkAdminRole(user).isSuccess()){
             return iCategoryService.addCategroy(categroyName,parentId);
         }
-         return ServerResponse.createByErrorMessage("用户无权限!,需要管理员权限!");
+         return ServerResponse.createByErrorMessage("用户无权限!,需要管理员权限!");*/
+        //拦截器已验证
+        return iCategoryService.addCategroy(categroyName,parentId);
     }
     @RequestMapping("set_category_name.do")
     @ResponseBody
     public ServerResponse<String> setCategoryName(HttpServletRequest request,String categroyName,int categroyId){
-        String token = CookieUtil.readLoginToken(request);
+       /* String token = CookieUtil.readLoginToken(request);
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -58,12 +60,13 @@ public class CategroyManageController {
         if(iUserService.checkAdminRole(user).isSuccess()){
             return iCategoryService.setCategroyName(categroyName,categroyId);
         }
-        return  ServerResponse.createByErrorMessage("商品添加失败!");
+        return  ServerResponse.createByErrorMessage("商品添加失败!");*/
+        return iCategoryService.setCategroyName(categroyName,categroyId);
     }
     @RequestMapping("get_category.do")
     @ResponseBody
     public ServerResponse getChildrenParallelCategroy(HttpServletRequest request,@RequestParam(value = "categoryId" ,defaultValue = "0") Integer categoryId){
-        String token = CookieUtil.readLoginToken(request);
+        /*String token = CookieUtil.readLoginToken(request);
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -75,12 +78,13 @@ public class CategroyManageController {
         if(iUserService.checkAdminRole(user).isSuccess()){
             return iCategoryService.getChildrenParallelCategory(categoryId);
         }
-        return ServerResponse.createByErrorMessage("权限不够需要管理员权限!");
+        return ServerResponse.createByErrorMessage("权限不够需要管理员权限!");*/
+        return iCategoryService.getChildrenParallelCategory(categoryId);
     }
     @RequestMapping("get_deep_gategory.do")
     @ResponseBody
     public ServerResponse getCategoryAndDeepChildrenGategory(HttpServletRequest request,@RequestParam(value="categoryId",defaultValue = "0") Integer categoryId){
-        String token = CookieUtil.readLoginToken(request);
+/*        String token = CookieUtil.readLoginToken(request);
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -92,6 +96,8 @@ public class CategroyManageController {
         if(iUserService.checkAdminRole(user).isSuccess()){
             return iCategoryService.getCategoryAndDeepChildrenCategory(categoryId);
         }
-        return ServerResponse.createByErrorMessage("权限不够需要管理员权限!");
+        return ServerResponse.createByErrorMessage("权限不够需要管理员权限!");*/
+
+        return iCategoryService.getCategoryAndDeepChildrenCategory(categoryId);
     }
 }

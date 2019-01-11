@@ -18,4 +18,6 @@ public interface IOrderService {
     ServerResponse<OrderVo> getManageOrderDetail(Long orderNo);
     ServerResponse<PageInfo> getManageSearchOrder(Long orderNo,Integer pagNum,Integer pagSize);
     ServerResponse<String> manageSendGoods(Long orderNo);
+    //重构新增订单关闭
+    void closeOrder(int hour);
 }

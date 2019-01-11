@@ -158,7 +158,7 @@ public class ProductManageController {
         Map resultMap = Maps.newHashMap();
         String token = CookieUtil.readLoginToken(request);
         if(StringUtils.isEmpty(token)){
-            ServerResponse serverResponse = ServerResponse.createByErrorMessage("用户未登录!");
+            ServerResponse serverResponse = ServerResponse.createByErrorMessage("请登录管理员!");
             resultMap.put("msg",serverResponse);
         }
         String userString = RedisSharedPoolUtil.get(token);

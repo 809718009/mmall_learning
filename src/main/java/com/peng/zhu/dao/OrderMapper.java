@@ -26,4 +26,7 @@ public interface OrderMapper {
 
     List<Order> selectOrderList();
 
+    List<Order> selectOrderStatusByCreateTime(@Param("status") Integer status,@Param("date") String date);
+
+    void updateOrderStatusById(int id);
 }

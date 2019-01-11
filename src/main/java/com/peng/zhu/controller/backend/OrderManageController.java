@@ -33,7 +33,7 @@ public class OrderManageController {
     @RequestMapping("list.do")
     @ResponseBody
     public ServerResponse<PageInfo> list(HttpServletRequest request, @RequestParam(value = "pagNum", defaultValue = "1") Integer pagNum, @RequestParam(value = "pagSize", defaultValue = "10") Integer pagSize) {
-        String token = CookieUtil.readLoginToken(request);
+       /* String token = CookieUtil.readLoginToken(request);
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -47,13 +47,16 @@ public class OrderManageController {
             return iOrderService.getManageOrderList(pagNum,pagSize);
         }
         return ServerResponse.createByErrorMessage("权限不够需要管理员权限!");
+*/
+        //填充业务逻辑
+        return iOrderService.getManageOrderList(pagNum,pagSize);
 
     }
 
     @RequestMapping("detail.do")
     @ResponseBody
     public ServerResponse<OrderVo> detail(HttpServletRequest request, Long orderNo) {
-        String token = CookieUtil.readLoginToken(request);
+       /* String token = CookieUtil.readLoginToken(request);
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -66,14 +69,18 @@ public class OrderManageController {
             //填充业务逻辑
             return iOrderService.getManageOrderDetail(orderNo);
         }
-        return ServerResponse.createByErrorMessage("权限不够需要管理员权限!");
+        return ServerResponse.createByErrorMessage("权限不够需要管理员权限!");*/
+
+
+        //填充业务逻辑
+        return iOrderService.getManageOrderDetail(orderNo);
 
     }
 
     @RequestMapping("search.do")
     @ResponseBody
     public ServerResponse<PageInfo> search(HttpServletRequest request, Long orderNo,@RequestParam(value = "pagNum", defaultValue = "1") Integer pagNum, @RequestParam(value = "pagSize", defaultValue = "10") Integer pagSize) {
-        String token = CookieUtil.readLoginToken(request);
+       /* String token = CookieUtil.readLoginToken(request);
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -86,14 +93,18 @@ public class OrderManageController {
             //填充业务逻辑
             return iOrderService.getManageSearchOrder(orderNo,pagNum,pagSize);
         }
-        return ServerResponse.createByErrorMessage("权限不够需要管理员权限!");
+        return ServerResponse.createByErrorMessage("权限不够需要管理员权限!");*/
+
+
+        //填充业务逻辑
+        return iOrderService.getManageSearchOrder(orderNo,pagNum,pagSize);
 
     }
 
     @RequestMapping("send_goods.do")
     @ResponseBody
     public ServerResponse<String> sendGoods(HttpServletRequest request, Long orderNo) {
-        String token = CookieUtil.readLoginToken(request);
+       /* String token = CookieUtil.readLoginToken(request);
         if(StringUtils.isEmpty(token)){
             return ServerResponse.createByErrorMessage("用户未登录!");
         }
@@ -106,7 +117,9 @@ public class OrderManageController {
             //填充业务逻辑
             return iOrderService.manageSendGoods(orderNo);
         }
-        return ServerResponse.createByErrorMessage("权限不够需要管理员权限!");
+        return ServerResponse.createByErrorMessage("权限不够需要管理员权限!");*/
+        //填充业务逻辑
+        return iOrderService.manageSendGoods(orderNo);
 
     }
 
