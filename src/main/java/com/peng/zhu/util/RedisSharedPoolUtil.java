@@ -33,6 +33,19 @@ public class RedisSharedPoolUtil {
         RedisSharedPool.returnResource(jedis);
         return result;
     }
+    public static Long setNx(String key,String value){
+        ShardedJedis jedis = null;
+        Long result = null;
+        try {
+            jedis = RedisSharedPool.getJedis();
+            result= jedis.setnx(key,value);
+        } catch (Exception e) {
+            log.error("setnx key:{}value:{} error",key,value,e);
+            return result;
+        }
+        RedisSharedPool.returnResource(jedis);
+        return result;
+    }
     public static String set(String key,String value){
         ShardedJedis jedis = null;
         String result = null;
