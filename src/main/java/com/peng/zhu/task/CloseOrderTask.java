@@ -5,6 +5,7 @@ import com.peng.zhu.service.IOrderService;
 import com.peng.zhu.util.PropertiesUtil;
 import com.peng.zhu.util.RedisSharedPoolUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -44,7 +45,7 @@ public class CloseOrderTask {
             String lockValue = RedisSharedPoolUtil.get(Const.RedisLock.CLOSE_ORDER_TASK_LOCK);
             if(lockValue!=null && System.currentTimeMillis()>Long.parseLong(lockValue)){
                 String getSetResult = RedisSharedPoolUtil.getSet(Const.RedisLock.CLOSE_ORDER_TASK_LOCK,String.valueOf(System.currentTimeMillis()));
-                if(getSetResult==null || (getSetResult!=null && getSetResult==lockValue)){
+                if(getSetResult==null || (getSetResult!=null &&  StringUtils.equals(getSetResult,lockValue))){
                     closeOrder(Const.RedisLock.CLOSE_ORDER_TASK_LOCK);
                 }else{
                     log.info("没有获取到分布式锁{}",Const.RedisLock.CLOSE_ORDER_TASK_LOCK);
